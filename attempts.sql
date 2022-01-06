@@ -50,11 +50,37 @@ LIMIT 1;
 -- 7:
 UPDATE albums
 SET release_year = 1986
-WHERE release_year IS NULL AND id = 4; -- don't techcnially need the first WHERE clause
+WHERE release_year IS NULL AND id = 4; -- don't technically need the first WHERE clause
 
 -- 8:
-INSERT INTO bands (id, name)
-VALUES (8, 'Parquet Courts');
+INSERT INTO bands (name)
+VALUES ('Parquet Courts');
 
-INSERT INTO albums (id, name, release_year, band_id)
-VALUES (19, 'Human Performance', 2016, 8);
+INSERT INTO albums (name, release_year, band_id)
+VALUES ('Human Performance', 2016, 8);
+
+-- 9:
+DELETE FROM albums WHERE id = 19;
+DELETE FROM bands WHERE id = 8;
+
+-- 10:
+SELECT AVG(length) AS 'Average Song Duration'
+FROM songs;
+
+-- 11:
+SELECT
+  albums.name AS 'Album',
+  albums.release_year AS 'Release Year',
+  MAX(songs.length) AS 'Duration'
+FROM albums
+JOIN songs ON songs.album_id = albums.id
+GROUP BY albums.id;
+
+-- 12:
+SELECT
+  bands.name AS 'Band',
+  COUNT(songs.id) AS 'Number of Songs'
+FROM bands
+JOIN albums ON albums.band_id = bands.id
+JOIN songs on songs.album_id = albums.id
+GROUP BY bands.id;
